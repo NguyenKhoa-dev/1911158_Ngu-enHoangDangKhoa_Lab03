@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lab3_Demo
 {
-    class SinhVien
+    public class SinhVien
     {
         public string MaSo { get; set; }
         public string HoTen { get; set; }

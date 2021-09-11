@@ -23,6 +23,8 @@ namespace Lab3_Demo
             qlsv = new QuanLySinhVien();
             qlsv.DocTuFile();
             LoadListView();
+            LoadToolStrip();
+
         }
 
         private void Them(SinhVien sv)
@@ -42,7 +44,7 @@ namespace Lab3_Demo
             cn = cn.Substring(0, cn.Length - 1);
             lvItem.SubItems.Add(cn);
             lvItem.SubItems.Add(sv.Hinh);
-            this.lvSinhVien.Items.Add(lvItem);
+            lvSinhVien.Items.Add(lvItem);
         }
 
         private void LoadListView()
@@ -52,6 +54,7 @@ namespace Lab3_Demo
             {
                 Them(sv);
             }
+            LoadToolStrip();
         }
 
         private SinhVien GetSinhVien()
@@ -135,6 +138,11 @@ namespace Lab3_Demo
 
         private void btnThem_Click(object sender, EventArgs e)
         {
+            ThemSinhVien();
+        }
+
+        private void ThemSinhVien()
+        {
             SinhVien sv = GetSinhVien();
             SinhVien kq = qlsv.Tim(sv.MaSo, delegate (object obj1, object obj2)
             {
@@ -144,8 +152,8 @@ namespace Lab3_Demo
                 MessageBox.Show("Mã sinh viên đã tồn tại!", "Lỗi thêm dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else
             {
-                this.qlsv.Them(sv);
-                this.LoadListView();
+                qlsv.Them(sv);
+                LoadListView();
             }
         }
 
@@ -155,6 +163,11 @@ namespace Lab3_Demo
         }
 
         private void btnXoa_Click(object sender, EventArgs e)
+        {
+            XoaSinhVien();
+        }
+
+        private void XoaSinhVien()
         {
             int count, i;
             ListViewItem lvItem;
@@ -187,15 +200,123 @@ namespace Lab3_Demo
             rdNam.Checked = true;
             for (int i = 0; i < clbChuyenNganh.Items.Count - 1; i++)
                 clbChuyenNganh.SetItemChecked(i, false);
+            if (MessageBox.Show("Muốn tạo lại danh sách sinh viên không", "Chú Ý", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+            {
+                qlsv.DanhSach.Clear();
+                qlsv.DocTuFile();
+                LoadListView();
+            }
         }
 
         private void btnSua_Click(object sender, EventArgs e)
+        {
+            SuaSinhVien();
+        }
+
+        private void SuaSinhVien()
         {
             SinhVien sv = GetSinhVien();
             bool kq;
             kq = qlsv.Sua(sv, sv.MaSo, SoSanhTheoMa);
             if (kq)
                 LoadListView();
+        }
+
+        private void btnBrowse_Click(object sender, EventArgs e)
+        {
+            OpenFileIImage();
+        }
+
+        private void OpenFileIImage()
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.Title = "Open File Image";
+            dlg.Multiselect = true;
+            dlg.Filter = "Image Files|"
+            + "*.bmp;*.jpg;*.png|"
+            + "All files (*.*)|*.*";
+            dlg.FileName = "Hãy Chọn File";
+
+            dlg.InitialDirectory = Environment.CurrentDirectory;
+
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                var fileName = dlg.FileName;
+                txtHinh.Text = fileName;
+                pbHinh.Load(fileName);
+            }
+        }
+
+        private void LoadToolStrip()
+        {
+            int count = qlsv.DanhSach.Count;
+            tstrDemSinhVien.Text = "Tổng sinh viên: " + count;
+        }
+
+        private void mởFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileIImage();
+        }
+
+        private void thoátToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void thêmToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ThemSinhVien();
+        }
+
+        private void xóaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            XoaSinhVien();
+        }
+
+        private void sửaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SuaSinhVien();
+        }
+
+        private void fontToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FontDialog dlg = new FontDialog();
+            if (dlg.ShowDialog() == DialogResult.OK)
+                lvSinhVien.Font = dlg.Font;
+        }
+
+        private void màuChữToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ColorDialog dlg = new ColorDialog();
+            if (dlg.ShowDialog() == DialogResult.OK)
+                lvSinhVien.ForeColor = dlg.Color;
+        }
+
+        private void sắpXếpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmTuyChon dlg = new frmTuyChon(1);
+            dlg.dssv = qlsv.DanhSach;
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                qlsv.DanhSach = dlg.dssv;
+                LoadListView();
+            }
+        }
+
+        private void tìmKiếmToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmTuyChon dlg = new frmTuyChon();
+            dlg.dssv = qlsv.DanhSach;
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                if (dlg.dssv.Count == 0)
+                    return;
+                else
+                {
+                    qlsv.DanhSach = dlg.dssv;
+                    LoadListView();
+                }                
+            }
         }
     }
 }
