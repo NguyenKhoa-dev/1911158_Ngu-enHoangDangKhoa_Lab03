@@ -149,6 +149,53 @@ namespace Lab3_Demo
             }
         }
 
+        private void btnThoat_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
 
+        private void btnXoa_Click(object sender, EventArgs e)
+        {
+            int count, i;
+            ListViewItem lvItem;
+            count = lvSinhVien.Items.Count - 1;
+            for (i = count; i >= 0; i--)
+            {
+                lvItem = lvSinhVien.Items[i];
+                if (lvItem.Checked)
+                    qlsv.Xoa(lvItem.SubItems[0].Text, SoSanhTheoMa);
+            }
+            LoadListView();
+            btnMacDinh.PerformClick();
+        }
+
+        private int SoSanhTheoMa(object obj1, object obj2)
+        {
+            SinhVien sv = obj2 as SinhVien;
+            return sv.MaSo.CompareTo(obj1);
+        }
+
+        private void btnMacDinh_Click(object sender, EventArgs e)
+        {
+            mtxtMaSo.Text = "";
+            txtHoTen.Text = "";
+            dtpNgaySinh.Value = DateTime.Now;
+            txtDiaChi.Text = "";
+            cbbLop.Text = cbbLop.Items[0].ToString();
+            txtHinh.Text = "";
+            pbHinh.ImageLocation = "";
+            rdNam.Checked = true;
+            for (int i = 0; i < clbChuyenNganh.Items.Count - 1; i++)
+                clbChuyenNganh.SetItemChecked(i, false);
+        }
+
+        private void btnSua_Click(object sender, EventArgs e)
+        {
+            SinhVien sv = GetSinhVien();
+            bool kq;
+            kq = qlsv.Sua(sv, sv.MaSo, SoSanhTheoMa);
+            if (kq)
+                LoadListView();
+        }
     }
 }

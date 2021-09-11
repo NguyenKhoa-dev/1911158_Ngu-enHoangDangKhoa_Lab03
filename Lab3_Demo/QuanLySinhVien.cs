@@ -33,7 +33,7 @@ namespace Lab3_Demo
             int i = DanhSach.Count - 1;
             for (; i >= 0; i--)
                 if (ss(obj, this[i]) == 0)
-                    this.DanhSach.RemoveAt(i);
+                    DanhSach.RemoveAt(i);
         }
 
         public SinhVien Tim(object obj, SoSanh ss)
@@ -51,7 +51,7 @@ namespace Lab3_Demo
         public bool Sua(SinhVien svsua, object obj, SoSanh ss)
         {
             bool kq = false;
-            for (int i = 0; i < DanhSach.Count - 1; i++)
+            for (int i = 0; i < DanhSach.Count; i++)
                 if (ss(obj, this[i]) == 0)
                 {
                     this[i] = svsua;

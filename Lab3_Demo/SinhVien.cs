@@ -24,14 +24,14 @@ namespace Lab3_Demo
 
         public SinhVien(string ms, string ht, DateTime ngay, string dc, string lop, string hinh, bool gt, List<string> cn)
         {
-            this.MaSo = ms;
-            this.HoTen = ht;
-            this.NgaySinh = ngay;
-            this.DiaChi = dc;
-            this.Lop = lop;
-            this.Hinh = hinh;
-            this.GioiTinh = gt;
-            this.ChuyenNganh = cn;
+            MaSo = ms;
+            HoTen = ht;
+            NgaySinh = ngay;
+            DiaChi = dc;
+            Lop = lop;
+            Hinh = hinh;
+            GioiTinh = gt;
+            ChuyenNganh = cn;
         }
     }
 }
